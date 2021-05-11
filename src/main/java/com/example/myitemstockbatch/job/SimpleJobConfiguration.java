@@ -1,5 +1,6 @@
 package com.example.myitemstockbatch.job;
 
+import com.example.myitemstockbatch.service.DanawaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,21 +18,23 @@ import org.springframework.context.annotation.Configuration;
 public class SimpleJobConfiguration {
     private final JobBuilderFactory jobBuilderFactory; // 생성자 DI 받음
     private final StepBuilderFactory stepBuilderFactory; // 생성자 DI 받음
+    private final DanawaService danawaService;
 
     @Bean
-    public Job simpleJob() {
-        return jobBuilderFactory.get("simpleJob")
-                .start(simpleStep1())
+    public Job minimalPriceJob() {
+        return jobBuilderFactory.get("minimalPriceJob")
+                .start(saveStep())
                 .build();
     }
 
     @Bean
-    public Step simpleStep1() {
-        return stepBuilderFactory.get("simpleStep1")
+    public Step saveStep() {
+        return stepBuilderFactory.get("saveStep")
                 .tasklet((contribution, chunkContext) -> {
-                    log.info(">>>>> This is Step1");
+                    danawaService.saveDanawaMinPrice(6562283);
                     return RepeatStatus.FINISHED;
                 })
                 .build();
     }
+
 }

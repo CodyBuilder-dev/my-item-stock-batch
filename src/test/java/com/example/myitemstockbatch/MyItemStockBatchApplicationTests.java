@@ -9,5 +9,4 @@ class MyItemStockBatchApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }
