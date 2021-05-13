@@ -38,6 +38,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
+      - name: Check Public IP of Github Instance
+        run: |
+          echo `curl -s icanhazip.com` >> $PUBLIC_IP
+
       - name: Set SG Inbound enable for public ip
         run: >
           aws ec2 authorize-security-group-ingress
@@ -45,8 +49,6 @@ jobs:
           --protocol tcp
           --port 3306
           --cidr $PUBLIC_IP/32
-        env:
-          PUBLIC_IP: $(echo `curl -s icanhazip.com`)
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
