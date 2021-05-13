@@ -38,9 +38,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
-      - name: Set Zip File Name
-        run:
-          echo "ZIP_NAME=$PROJECT_NAME$SUBPROJECT_NAME-$PROJECT_VERSION.zip" >> $GITHUB_ENV
 
       - name: Check Public IP of Github Instance
         run: |
@@ -60,13 +57,17 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Reboke SG Inbound  for public ip
+      - name: Revoke SG Inbound  for public ip
         run: >
           aws ec2 revoke-security-group-ingress
           --group-id sg-073a42921509412a8
           --protocol tcp
           --port 3306
           --cidr $PUBLIC_IP/32
+
+      - name: Set Zip File Name
+        run:
+          echo "ZIP_NAME=$PROJECT_NAME$SUBPROJECT_NAME-$PROJECT_VERSION.zip" >> $GITHUB_ENV
 
       - name: Make zip file
         run: zip -r $ZIP_NAME . -x ./.gradle/\* # 프로젝트 전체를 묶어야 한다
