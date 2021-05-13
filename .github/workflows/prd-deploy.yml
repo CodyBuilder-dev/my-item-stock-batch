@@ -41,6 +41,7 @@ jobs:
       - name: Check Public IP of Github Instance
         run: |
           export PUBLIC_IP=`curl -s icanhazip.com`
+          export PUBLIC_IP=$PUBLIC_IP/32
           echo $PUBLIC_IP
 
       - name: Set SG Inbound enable for public ip
@@ -49,7 +50,7 @@ jobs:
           --group-id sg-073a42921509412a8
           --protocol tcp
           --port 3306
-          --cidr $PUBLIC_IP/32
+          --cidr $PUBLIC_IP
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
