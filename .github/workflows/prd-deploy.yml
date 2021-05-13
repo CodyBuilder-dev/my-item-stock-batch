@@ -31,6 +31,24 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
 
+      - name: Set AWS confidentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Check Public IP of Github Instance
+        uses: export PUBLIC_IP=`curl icanhazip.com`
+
+      - name: Set SG Inbound enable for public ip
+        uses: >
+          aws ec2 authorize-security-group-ingress
+          --group-id sg-073a42921509412a8
+          --protocol tcp
+          --port 3306
+          --cidr $PUBLIC_IP/32
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -39,14 +57,6 @@ jobs:
 
       - name: Make zip file
         run: zip -r $ZIP_NAME . -x ./.gradle/\* # 프로젝트 전체를 묶어야 한다
-
-
-      - name: Set AWS confidentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
 
       - name: Upload Zip to S3
         run: >
@@ -61,6 +71,7 @@ jobs:
           --deployment-config-name CodeDeployDefault.AllAtOnce
           --deployment-group-name dg-$PROJECT_NAME$SUBPROJECT_NAME
           --s3-location bucket=$PROJECT_NAME,bundleType=zip,key=$ZIP_NAME
+
 
 #    - name: Deploy from Github Directly with CodeDeploy
 #      run: >
