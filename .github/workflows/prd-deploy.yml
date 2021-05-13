@@ -40,7 +40,7 @@ jobs:
 
       - name: Check Public IP of Github Instance
         run: |
-          echo `curl -s icanhazip.com` >> $PUBLIC_IP
+          echo "PUBLIC_IP=`curl -s icanhazip.com`" >> $GITHUB_ENV
 
       - name: Set SG Inbound enable for public ip
         run: >
