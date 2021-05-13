@@ -1,4 +1,4 @@
-package com.example.myitemstockbatch.entity;
+package com.example.myitemstockbatch.springbatch.entity;
 
 import lombok.Data;
 

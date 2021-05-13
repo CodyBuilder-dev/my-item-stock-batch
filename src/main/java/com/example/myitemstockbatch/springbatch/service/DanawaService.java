@@ -1,9 +1,9 @@
-package com.example.myitemstockbatch.service;
+package com.example.myitemstockbatch.springbatch.service;
 
-import com.example.myitemstockbatch.entity.MinimalPrice;
-import com.example.myitemstockbatch.repository.DanawaCrawlRepository;
+import com.example.myitemstockbatch.springbatch.entity.MinimalPrice;
+import com.example.myitemstockbatch.springbatch.repository.DanawaCrawlRepository;
 
-import com.example.myitemstockbatch.repository.MinimalPriceRepository;
+import com.example.myitemstockbatch.springbatch.repository.MinimalPriceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

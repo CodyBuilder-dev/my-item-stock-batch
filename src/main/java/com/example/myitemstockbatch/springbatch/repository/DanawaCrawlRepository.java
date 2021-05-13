@@ -1,10 +1,9 @@
-package com.example.myitemstockbatch.repository;
+package com.example.myitemstockbatch.springbatch.repository;
 
-import com.example.myitemstockbatch.exception.MultipleLwstPrcException;
+import com.example.myitemstockbatch.springbatch.exception.MultipleLwstPrcException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;

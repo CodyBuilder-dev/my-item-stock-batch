@@ -1,6 +1,6 @@
-package com.example.myitemstockbatch.job;
+package com.example.myitemstockbatch.springbatch.job;
 
-import com.example.myitemstockbatch.service.DanawaService;
+import com.example.myitemstockbatch.springbatch.service.DanawaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

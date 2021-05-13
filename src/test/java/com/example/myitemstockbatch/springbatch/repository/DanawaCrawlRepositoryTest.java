@@ -1,13 +1,7 @@
-package com.example.myitemstockbatch.repository;
+package com.example.myitemstockbatch.springbatch.repository;
 
-import com.example.myitemstockbatch.service.DanawaService;
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class DanawaCrawlRepositoryTest {
 
