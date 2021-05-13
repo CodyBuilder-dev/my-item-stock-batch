@@ -46,7 +46,7 @@ jobs:
           --port 3306
           --cidr $PUBLIC_IP/32
         env:
-          PUBLIC_IP: `curl -s icanhazip.com`
+          PUBLIC_IP: $(curl -s icanhazip.com)
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
