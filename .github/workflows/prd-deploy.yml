@@ -42,7 +42,7 @@ jobs:
         run: export PUBLIC_IP=`curl icanhazip.com`
 
       - name: Set SG Inbound enable for public ip
-        uses: >
+        run: >
           aws ec2 authorize-security-group-ingress
           --group-id sg-073a42921509412a8
           --protocol tcp
