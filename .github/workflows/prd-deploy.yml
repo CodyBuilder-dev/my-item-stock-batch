@@ -39,7 +39,7 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Check Public IP of Github Instance
-        uses: export PUBLIC_IP=`curl icanhazip.com`
+        run: export PUBLIC_IP=`curl icanhazip.com`
 
       - name: Set SG Inbound enable for public ip
         uses: >
