@@ -30,6 +30,7 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.batch:spring-batch-test'
+//	testImplementation 'org.apache.logging.log4j:log4j-core'
 }
 
 test {
