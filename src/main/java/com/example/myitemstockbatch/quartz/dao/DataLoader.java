@@ -1,4 +1,4 @@
-package com.example.myitemstockbatch.config;
+package com.example.myitemstockbatch.quartz.dao;
 
 import com.example.myitemstockbatch.quartz.dto.JobRequest;
 import com.example.myitemstockbatch.quartz.job.CronJob;
@@ -10,6 +10,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
 
 import java.time.LocalDateTime;
 
+//todo: DataLoader의 역할과 실행시점은 언제일까?
+//todo: 왜 ApplicationListener를 구현할까?
+//todo: 이미 Controller에서 CRUD를 하는데 여기서 왜 또 addJob을 수행할까?
 public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     private ScheduleService scheduleService;
 

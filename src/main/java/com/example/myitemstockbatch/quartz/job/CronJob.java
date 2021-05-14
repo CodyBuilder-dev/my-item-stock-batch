@@ -7,14 +7,16 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
-//todo: 왜 그냥 Job을 구현하지 않고 QuartzJobBean을 상속할까?
+
 @Slf4j
+//todo: 왜 그냥 Job을 구현하지 않고 QuartzJobBean을 상속할까?
 public class CronJob extends QuartzJobBean {
     private int MAX_SLEEP_IN_SECONDS = 5;
 
     private volatile Thread currThread;
 
     @Override
+    //todo: execute와 executeInternal의 차이는 무엇일까?
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
         int jobId = jobDataMap.getInt("jobId");

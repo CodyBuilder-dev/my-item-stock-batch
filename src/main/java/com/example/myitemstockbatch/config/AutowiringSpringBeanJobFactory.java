@@ -7,9 +7,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 
-//todo : 왜 extend하고 왜 implements하는지 확인하기
+//todo : AutowiringSpringBeanJobFactory의 역할과 실행 시점
+//todo : 왜 SpringBeanJobFactory를 extend할까?
+//todo : 왜 ApplicationContextAware를 implements할까?
 public class AutowiringSpringBeanJobFactory extends SpringBeanJobFactory implements ApplicationContextAware {
-    private transient AutowireCapableBeanFactory beanFactory;
+    private transient AutowireCapableBeanFactory beanFactory; //todo : AutowireCapableBeanFactory의 역할은?
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

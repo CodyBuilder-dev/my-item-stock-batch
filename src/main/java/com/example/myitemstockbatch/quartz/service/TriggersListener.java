@@ -5,9 +5,12 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
 import org.quartz.Trigger;
 import org.quartz.TriggerListener;
+import org.springframework.stereotype.Component;
 
 @Slf4j
-//todo: 왜 TriggerListener를 이름만 약간 바꿔서 재구현했을까
+@Component // 이걸로 Bean으로 만들어 줘야, @Configuration에서 읽어갈 수 잇음
+//todo: TriggersListener의 역할과 실행 시점은 언제일까?
+//todo: 왜 TriggerListener를 이름만 약간 바꿔서 재구현했을까? 각 메서드의 역할은 무엇일까?
 public class TriggersListener implements TriggerListener {
     @Override
     public String getName() {

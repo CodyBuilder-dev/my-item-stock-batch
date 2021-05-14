@@ -19,10 +19,12 @@ import java.util.Date;
 import static org.quartz.CronExpression.isValidExpression;
 
 public class JobUtils {
+
+    //todo : ApplicationContext를 인자로 받는 이유가 무엇일까?
     public static JobDetail createJob(JobRequest jobRequest, Class<? extends Job> jobClass, ApplicationContext context) {
         JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
         factoryBean.setJobClass(jobClass);
-        factoryBean.setDurability(false);
+        factoryBean.setDurability(false); // todo: setDurability가 무슨 의미일까?
         factoryBean.setApplicationContext(context);
         factoryBean.setName(jobRequest.getJobName());
         factoryBean.setGroup(jobRequest.getJobGroup());
@@ -31,7 +33,7 @@ public class JobUtils {
             factoryBean.setJobDataMap(jobRequest.getJobDataMap());
         }
 
-        factoryBean.afterPropertiesSet();
+        factoryBean.afterPropertiesSet(); // todo: afterPropertiesSet을 호출하는 이유가 무엇일까?
         return factoryBean.getObject();
     }
 
@@ -39,7 +41,7 @@ public class JobUtils {
         String cronExpression = jobRequest.getCronExpression();
         LocalDateTime startDateAt = jobRequest.getStartDateAt();
 
-        if (!StringUtils.isEmpty(cronExpression)) {
+        if (StringUtils.hasLength(cronExpression)) {
             if (!isValidExpression(cronExpression)) {
                 throw new IllegalArgumentException("Provided expression " + cronExpression + " is not a valid cron expression");
             }
@@ -50,12 +52,13 @@ public class JobUtils {
         throw new IllegalStateException("unsupported trigger descriptor");
     }
 
+    //todo : CronTrigger와 SimpleTrigger의 차이는 무엇일까?
     private static Trigger createCronTrigger(JobRequest jobRequest) {
         CronTriggerFactoryBean factoryBean = new CronTriggerFactoryBean();
         factoryBean.setName(jobRequest.getJobName());
         factoryBean.setGroup(jobRequest.getJobGroup());
         factoryBean.setCronExpression(jobRequest.getCronExpression());
-        factoryBean.setMisfireInstruction(SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW);
+        factoryBean.setMisfireInstruction(SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW); // todo: setMisfireInstruction은 무엇일까
         try {
             factoryBean.afterPropertiesSet();
         } catch (ParseException e) {

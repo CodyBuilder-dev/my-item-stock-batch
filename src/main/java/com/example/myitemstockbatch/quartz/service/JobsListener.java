@@ -5,8 +5,12 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.JobKey;
 import org.quartz.JobListener;
+import org.springframework.stereotype.Component;
 
 @Slf4j
+@Component // 이걸로 Bean으로 만들어 줘야, @Configuration에서 읽어갈 수 잇음
+//todo: JobsListener의 용도와 실행 시점
+//todo: 왜 JobListener를 이름만 약간 바꿔서 재구현했을까? 각 메서드의 역할은 무엇일까?
 public class JobsListener implements JobListener {
     @Override
     public String getName() {
