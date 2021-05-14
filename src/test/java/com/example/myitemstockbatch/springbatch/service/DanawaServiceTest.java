@@ -1,10 +1,4 @@
-package com.example.myitemstockbatch.service;
-
-import org.junit.Assert;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.io.IOException;
+package com.example.myitemstockbatch.springbatch.service;
 
 class DanawaServiceTest {
 //    @Autowired
