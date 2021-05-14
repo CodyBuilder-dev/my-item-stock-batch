@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1> 현재 Job 목록 받아오기 </h1>
+        <span th:text="${allJobs}"></span>
+    <h1> Job 추가하기 </h1>
+        <form action="/api/quartz/schedule/job"
+              method="POST"
+              enctype="multipart/form-data">
+            Job이름을 적어주세요<input name="jobName">
+            Job의 Cron Expression을 적어주세요<input name="cronExpression">
+            <button>전송하기</button>
+        </form>
+
+    <h1> Job 제거하기 </h1>
+        <form action="/api/quartz/schedule/job"
+              method="DELETE"
+              enctype="multipart/form-data">
+            Job이름을 적어주세요<input name="jobName">
+            <button>전송하기</button>
+        </form>
+
+    <h1> Job 중지하기 </h1>
+        <form action="/job/pause"
+              method="PUT"
+              enctype="multipart/form-data">
+            Job이름을 적어주세요<input name="jobName">
+            <button>전송하기</button>
+        </form>
+
+    <h1> Job 재개하기 </h1>
+        <form action="/job/resume"
+              method="PUT"
+              enctype="multipart/form-data">
+            Job이름을 적어주세요<input name="jobName">
+            <button>전송하기</button>
+        </form>
+</body>
+</html>
