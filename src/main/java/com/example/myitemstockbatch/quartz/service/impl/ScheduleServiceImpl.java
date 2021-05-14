@@ -1,11 +1,33 @@
 package com.example.myitemstockbatch.quartz.service.impl;
 
+import com.example.myitemstockbatch.quartz.dto.JobRequest;
+import com.example.myitemstockbatch.quartz.dto.JobResponse;
+import com.example.myitemstockbatch.quartz.dto.JobStatusResponse;
 import com.example.myitemstockbatch.quartz.service.ScheduleService;
+import com.example.myitemstockbatch.quartz.utils.DateTimeUtils;
+import com.example.myitemstockbatch.quartz.utils.JobUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.quartz.*;
+import org.quartz.impl.matchers.GroupMatcher;
+import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+@Slf4j
+@Service
 public class ScheduleServiceImpl implements ScheduleService {
     private SchedulerFactoryBean schedulerFactoryBean;
-
     private ApplicationContext context;
+
+    ScheduleServiceImpl(SchedulerFactoryBean schedulerFactoryBean,
+                        ApplicationContext context) {
+        this.schedulerFactoryBean = schedulerFactoryBean;
+        this.context = context;
+    }
 
     @Override
     public boolean addJob(JobRequest jobRequest, Class<? extends Job> jobClass) {

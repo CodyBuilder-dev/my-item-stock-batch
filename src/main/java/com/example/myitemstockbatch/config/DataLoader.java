@@ -1,8 +1,21 @@
 package com.example.myitemstockbatch.config;
 
+import com.example.myitemstockbatch.quartz.dto.JobRequest;
+import com.example.myitemstockbatch.quartz.job.CronJob;
+import com.example.myitemstockbatch.quartz.job.SimpleJob;
+import com.example.myitemstockbatch.quartz.service.ScheduleService;
+import org.quartz.JobDataMap;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextRefreshedEvent;
+
+import java.time.LocalDateTime;
+
 public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
-    @Autowired
     private ScheduleService scheduleService;
+
+    DataLoader(ScheduleService scheduleService) {
+        this.scheduleService = scheduleService;
+    }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
@@ -23,10 +36,10 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         jobRequest.setJobDataMap(jobDataMap);
         scheduleService.addJob(jobRequest, CronJob.class);
 
-        jobRequest = new JobRequest();
-        jobRequest.setJobName("cronJob2");
-        jobRequest.setCronExpression("0 */5 * ? * *"); //every 5 min
-        scheduleService.addJob(jobRequest, CronJob2.class);
+//        jobRequest = new JobRequest();
+//        jobRequest.setJobName("cronJob2");
+//        jobRequest.setCronExpression("0 */5 * ? * *"); //every 5 min
+//        scheduleService.addJob(jobRequest, CronJob2.class);
 
     }
 }

@@ -1,5 +1,10 @@
 package com.example.myitemstockbatch.quartz.dto;
 
+import lombok.Builder;
+import lombok.Data;
+
+@Builder
+@Data
 public class JobResponse {
     private String jobName;
     private String groupName;

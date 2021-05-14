@@ -1,6 +1,14 @@
 package com.example.myitemstockbatch.quartz.service;
 
-public class TriggersListener {
+import lombok.extern.slf4j.Slf4j;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobKey;
+import org.quartz.Trigger;
+import org.quartz.TriggerListener;
+
+@Slf4j
+//todo: 왜 TriggerListener를 이름만 약간 바꿔서 재구현했을까
+public class TriggersListener implements TriggerListener {
     @Override
     public String getName() {
         return "globalTrigger";

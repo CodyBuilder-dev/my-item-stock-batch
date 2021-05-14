@@ -1,5 +1,12 @@
 package com.example.myitemstockbatch.quartz.dto;
 
+import lombok.Data;
+import org.quartz.JobDataMap;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
+
+@Data
 public class JobRequest {
 
     private String jobGroup = "DEFAULT";

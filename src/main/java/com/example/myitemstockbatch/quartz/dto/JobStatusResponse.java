@@ -1,10 +1,13 @@
 package com.example.myitemstockbatch.quartz.dto;
 
+import lombok.Data;
+
+import java.util.List;
+
+@Data
 public class JobStatusResponse {
-    private String jobName;
-    private String groupName;
-    private String jobStatus;
-    private String scheduleTime;
-    private String lastFiredTime;
-    private String nextFireTime;
+    private int numOfAllJobs;
+    private int numOfGroups;
+    private int numOfRunningJobs;
+    private List<JobResponse> jobs;
 }

@@ -1,6 +1,14 @@
 package com.example.myitemstockbatch.config;
 
-public class AutowiringSpringBeanJobFactory {
+import org.quartz.spi.TriggerFiredBundle;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.scheduling.quartz.SpringBeanJobFactory;
+
+//todo : 왜 extend하고 왜 implements하는지 확인하기
+public class AutowiringSpringBeanJobFactory extends SpringBeanJobFactory implements ApplicationContextAware {
     private transient AutowireCapableBeanFactory beanFactory;
 
     @Override

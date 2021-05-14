@@ -1,5 +1,10 @@
 package com.example.myitemstockbatch.quartz.service;
 
+import com.example.myitemstockbatch.quartz.dto.JobRequest;
+import com.example.myitemstockbatch.quartz.dto.JobStatusResponse;
+import org.quartz.Job;
+import org.quartz.JobKey;
+
 public interface ScheduleService {
     JobStatusResponse getAllJobs();
 

@@ -1,14 +1,30 @@
 package com.example.myitemstockbatch.config;
 
+import com.example.myitemstockbatch.quartz.service.JobsListener;
+import com.example.myitemstockbatch.quartz.service.TriggersListener;
+import org.springframework.boot.autoconfigure.quartz.QuartzProperties;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
+
+import java.util.Properties;
+
 public class QuartzConfiguration {
-    @Autowired
+
+    // 커스텀 Lister, Properties
     private TriggersListener triggersListener;
 
-    @Autowired
     private JobsListener jobsListener;
 
-    @Autowired
     private QuartzProperties quartzProperties;
+
+    QuartzConfiguration(TriggersListener triggersListener,
+                        JobsListener jobsListener,
+                        QuartzProperties quartzProperties) {
+        this.triggersListener =triggersListener;
+        this.jobsListener = jobsListener;
+        this.quartzProperties = quartzProperties;
+    }
 
     /**
      * Quartz 관련 설정
@@ -16,6 +32,7 @@ public class QuartzConfiguration {
      * @param applicationContext the applicationContext
      * @return SchedulerFactoryBean
      */
+    // 왜 applicationcontext를 인자로 받을까?
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean(ApplicationContext applicationContext) {
         SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();

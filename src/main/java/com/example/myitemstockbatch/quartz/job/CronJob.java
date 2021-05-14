@@ -1,6 +1,15 @@
 package com.example.myitemstockbatch.quartz.job;
 
-public class CronJob {
+import lombok.extern.slf4j.Slf4j;
+import org.quartz.*;
+import org.springframework.scheduling.quartz.QuartzJobBean;
+
+import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
+
+//todo: 왜 그냥 Job을 구현하지 않고 QuartzJobBean을 상속할까?
+@Slf4j
+public class CronJob extends QuartzJobBean {
     private int MAX_SLEEP_IN_SECONDS = 5;
 
     private volatile Thread currThread;
