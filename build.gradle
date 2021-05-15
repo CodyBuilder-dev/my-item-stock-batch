@@ -30,6 +30,10 @@ dependencies {
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.batch:spring-batch-test'
+
+	//todo: 버전을 명시해야 하는 라이브러리와 그렇지 않은 라이브러리의 차이 알아내기
+	testImplementation group: 'org.kohsuke', name: 'github-api', version: '1.128'
+
 //	testImplementation 'org.apache.logging.log4j:log4j-core'
 }
 
