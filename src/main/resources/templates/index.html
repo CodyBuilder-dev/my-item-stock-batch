@@ -28,7 +28,7 @@
             </tr>
         </table>
 
-    <h1> SimpleJob 추가하기 </h1>
+    <h1> CronJob 추가하기 </h1>
     <form action="/api/quartz/schedule/job"
           method="POST">
         Job이름을 적어주세요<input name="jobName">
@@ -38,8 +38,7 @@
     </form>
 
     <h1> SimpleJob 추가하기 </h1>
-        <form action="/api/quartz/schedule/job"
-              method="POST">
+        <form action="/api/quartz/schedule/job" method="POST">
             <p>Job이름을 적어주세요<input name="jobName"></p>
             <p>Job의 시작일자를 적어주세요(YYYY-MM-DD HH:MM:SS)<input name="startDateAt"></p>
             <p>Job의 주기(초)를 적어주세요<input name="repeatIntervalInSeconds"></p>
@@ -49,22 +48,22 @@
         </form>
 
     <h1> Job 제거하기 </h1>
-        <form action="/api/quartz/schedule/job"
-              method="DELETE">
+        <form action="/api/quartz/schedule/job" method="POST">
+            <input type="hidden" name="_method" value="DELETE"/>
             Job이름을 적어주세요<input name="jobName">
             <button>전송하기</button>
         </form>
 
     <h1> Job 중지하기 </h1>
-        <form action="/api/quartz/schedule/job/pause"
-              method="PUT">
+        <form action="/api/quartz/schedule/job/pause" method="POST">
+            <input type="hidden" name="_method" value="PUT"/>
             Job이름을 적어주세요<input name="jobName">
             <button>전송하기</button>
         </form>
 
     <h1> Job 재개하기 </h1>
-        <form action="/api/quartz/schedule/job/resume"
-              method="PUT">
+        <form action="/api/quartz/schedule/job/resume" method="POST">
+            <input type="hidden" name="_method" value="PUT"/>
             Job이름을 적어주세요<input name="jobName">
             <button>전송하기</button>
         </form>
