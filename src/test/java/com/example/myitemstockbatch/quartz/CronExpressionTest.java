@@ -13,12 +13,12 @@ public class CronExpressionTest {
 
     @Test
     public void testFor6DigitCronExpWithSpace() {
-        Assertions.assertTrue(isValidExpression("* * * * * * "));
+        Assertions.assertFalse(isValidExpression("* * * * * * "));
     }
 
     @Test
     public void testFor6DigitCronExpWithSlash() {
-        Assertions.assertTrue(isValidExpression("*/5 * * * * *"));
+        Assertions.assertFalse(isValidExpression("*/5 * * * * *"));
     }
 
     @Test
@@ -28,17 +28,27 @@ public class CronExpressionTest {
 
     @Test
     public void testFor7DigitCronExp() {
-        Assertions.assertTrue(isValidExpression("* * * * * * *"));
+        Assertions.assertFalse(isValidExpression("* * * * * * *"));
+    }
+
+    @Test
+    public void testFor7DigitCronExpWithQuestion() {
+        Assertions.assertTrue(isValidExpression("* * * * * ? *"));
+    }
+
+    @Test
+    public void testFor7DigitCronExpWithQuestion2() {
+        Assertions.assertTrue(isValidExpression("* * * ? * * *"));
     }
 
     @Test
     public void testFor7DigitCronExpWithSlash() {
-        Assertions.assertTrue(isValidExpression("*/5 * * * * * *"));
+        Assertions.assertFalse(isValidExpression("*/5 * * * * * *"));
     }
 
     @Test
     public void testFor7DigitCronExpWithSpace() {
-        Assertions.assertTrue(isValidExpression("*/5 * * * * * * "));
+        Assertions.assertFalse(isValidExpression("*/5 * * * * * * "));
     }
 
 
