@@ -3,7 +3,7 @@ package com.example.myitemstockbatch.admin.service.impl;
 import com.example.myitemstockbatch.admin.dto.JobRequest;
 import com.example.myitemstockbatch.admin.dto.JobResponse;
 import com.example.myitemstockbatch.admin.dto.JobStatusResponse;
-import com.example.myitemstockbatch.admin.service.ScheduleService;
+import com.example.myitemstockbatch.admin.service.BatchJobService;
 import com.example.myitemstockbatch.quartz.utils.DateTimeUtils;
 import com.example.myitemstockbatch.quartz.utils.JobUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -19,18 +19,18 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class ScheduleServiceImpl implements ScheduleService {
+public class BatchBatchJobServiceImpl implements BatchJobService {
     private SchedulerFactoryBean schedulerFactoryBean;
     private ApplicationContext context;
 
-    ScheduleServiceImpl(SchedulerFactoryBean schedulerFactoryBean,
+    BatchBatchJobServiceImpl(SchedulerFactoryBean schedulerFactoryBean,
                         ApplicationContext context) {
         this.schedulerFactoryBean = schedulerFactoryBean;
         this.context = context;
     }
 
     @Override
-    public JobStatusResponse getAllJobs() {
+    public JobStatusResponse getAllBatchJobs() {
         JobResponse jobResponse;
         JobStatusResponse jobStatusResponse = new JobStatusResponse();
         List<JobResponse> jobs = new ArrayList<>();
@@ -41,28 +41,31 @@ public class ScheduleServiceImpl implements ScheduleService {
         try {
             Scheduler scheduler = schedulerFactoryBean.getScheduler();
             for (String groupName : scheduler.getJobGroupNames()) {
-                numOfGroups++;
-                for (JobKey jobKey : scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName))) {
-                    List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobKey);
+                if ("BATCH".equals(groupName)) { // BATCH 그룹일때만 세기
+                    numOfGroups++;
+                    for (JobKey jobKey : scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName))) {
+                        List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobKey);
 
-                    jobResponse = JobResponse.builder()
-                            .jobName(jobKey.getName())
-                            .groupName(jobKey.getGroup())
-                            .scheduleTime(DateTimeUtils.toString(triggers.get(0).getStartTime()))
-                            .lastFiredTime(DateTimeUtils.toString(triggers.get(0).getPreviousFireTime()))
-                            .nextFireTime(DateTimeUtils.toString(triggers.get(0).getNextFireTime()))
-                            .build();
+                        jobResponse = JobResponse.builder()
+                                .jobName(jobKey.getName())
+                                .groupName(jobKey.getGroup())
+                                .scheduleTime(DateTimeUtils.toString(triggers.get(0).getStartTime()))
+                                .lastFiredTime(DateTimeUtils.toString(triggers.get(0).getPreviousFireTime()))
+                                .nextFireTime(DateTimeUtils.toString(triggers.get(0).getNextFireTime()))
+                                .build();
 
-                    if (isJobRunning(jobKey)) {
-                        jobResponse.setJobStatus("RUNNING");
-                        numOfRunningJobs++;
-                    } else {
-                        String jobState = getJobState(jobKey);
-                        jobResponse.setJobStatus(jobState);
+                        if (isJobRunning(jobKey)) {
+                            jobResponse.setJobStatus("RUNNING");
+                            numOfRunningJobs++;
+                        } else {
+                            String jobState = getJobState(jobKey);
+                            jobResponse.setJobStatus(jobState);
+                        }
+                        numOfAllJobs++;
+                        jobs.add(jobResponse);
                     }
-                    numOfAllJobs++;
-                    jobs.add(jobResponse);
                 }
+
             }
         } catch (SchedulerException e) {
             log.error("[schedulerdebug] error while fetching all job info", e);
@@ -76,8 +79,33 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public boolean addJob(JobRequest jobRequest, Class<? extends Job> jobClass) {
-        //todo : job history에도 기록하도록 함.
+    public boolean launchBatchJob(JobKey jobKey) {
+        return false;
+    }
+
+    @Override
+    public boolean resetBatchJob(JobKey jobKey) {
+        Scheduler scheduler = schedulerFactoryBean.getScheduler();
+
+        try {
+            List<? extends Trigger>  triggers = scheduler.getTriggersOfJob(jobKey);
+            for (Trigger trigger : triggers) {
+                TriggerKey triggerKey = trigger.getKey();
+                if (scheduler.getTriggerState(triggerKey).equals(Trigger.TriggerState.ERROR)) {
+                    scheduler.resetTriggerFromErrorState(triggerKey);
+                }
+            }
+
+            return true;
+        } catch (SchedulerException e) {
+            log.error("[schedulerdebug] error occurred while deleting job with jobKey : {}", jobKey, e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addBatchJob(JobRequest jobRequest, Class<? extends Job> jobClass) {
+
         JobKey jobKey = null;
         JobDetail jobDetail;
         Trigger trigger;
@@ -88,7 +116,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             jobKey = JobKey.jobKey(jobRequest.getJobName(), jobRequest.getJobGroup());
 
             Date dt = schedulerFactoryBean.getScheduler().scheduleJob(jobDetail, trigger);
-            log.debug("Job with jobKey : {} scheduled successfully at date : {}", jobDetail.getKey(), dt);
+            log.debug("Batch Job with jobKey : {} scheduled successfully at date : {}", jobDetail.getKey(), dt);
             return true;
         } catch (SchedulerException e) {
             log.error("error occurred while scheduling with jobKey : {}", jobKey, e);
@@ -97,8 +125,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public boolean deleteJob(JobKey jobKey) {
-        //todo : job history에도 기록하도록 함.
+    public boolean deleteBatchJob(JobKey jobKey) {
         log.debug("[schedulerdebug] deleting job with jobKey : {}", jobKey);
         try {
             return schedulerFactoryBean.getScheduler().deleteJob(jobKey);
@@ -107,34 +134,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
         return false;
     }
-
-    @Override
-    public boolean pauseJob(JobKey jobKey) {
-        //todo : job history에도 기록하도록 함.
-        log.debug("[schedulerdebug] pausing job with jobKey : {}", jobKey);
-        try {
-            schedulerFactoryBean.getScheduler().pauseJob(jobKey);
-            return true;
-        } catch (SchedulerException e) {
-            log.error("[schedulerdebug] error occurred while deleting job with jobKey : {}", jobKey, e);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean resumeJob(JobKey jobKey) {
-        //todo : job history에도 기록하도록 함.
-        log.debug("[schedulerdebug] resuming job with jobKey : {}", jobKey);
-        try {
-            schedulerFactoryBean.getScheduler().resumeJob(jobKey);
-            return true;
-        } catch (SchedulerException e) {
-            log.error("[schedulerdebug] error occurred while resuming job with jobKey : {}", jobKey, e);
-        }
-        return false;
-    }
-
-
 
     @Override
     public boolean isJobRunning(JobKey jobKey) {
