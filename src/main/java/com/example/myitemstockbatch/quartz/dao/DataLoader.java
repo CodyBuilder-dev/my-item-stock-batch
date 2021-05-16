@@ -1,9 +1,9 @@
 package com.example.myitemstockbatch.quartz.dao;
 
-import com.example.myitemstockbatch.quartz.dto.JobRequest;
+import com.example.myitemstockbatch.admin.dto.JobRequest;
 import com.example.myitemstockbatch.quartz.job.CronJob;
 import com.example.myitemstockbatch.quartz.job.SimpleJob;
-import com.example.myitemstockbatch.quartz.service.ScheduleService;
+import com.example.myitemstockbatch.admin.service.ScheduleService;
 import org.quartz.JobDataMap;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;

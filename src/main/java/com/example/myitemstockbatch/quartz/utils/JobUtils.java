@@ -1,6 +1,6 @@
 package com.example.myitemstockbatch.quartz.utils;
 
-import com.example.myitemstockbatch.quartz.dto.JobRequest;
+import com.example.myitemstockbatch.admin.dto.JobRequest;
 import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.SimpleTrigger;

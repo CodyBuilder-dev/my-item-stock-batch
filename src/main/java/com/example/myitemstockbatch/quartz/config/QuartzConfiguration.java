@@ -1,7 +1,7 @@
-package com.example.myitemstockbatch.config;
+package com.example.myitemstockbatch.quartz.config;
 
-import com.example.myitemstockbatch.quartz.service.JobsListener;
-import com.example.myitemstockbatch.quartz.service.TriggersListener;
+import com.example.myitemstockbatch.quartz.listener.JobsListener;
+import com.example.myitemstockbatch.quartz.listener.TriggersListener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.quartz.QuartzProperties;
@@ -44,24 +44,30 @@ public class QuartzConfiguration {
     public SchedulerFactoryBean schedulerFactoryBean(ApplicationContext applicationContext) {
         SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
 
+        // Application Context 지정
+        schedulerFactoryBean.setApplicationContext(applicationContext);
+
+        // JobFactory 지정
         AutowiringSpringBeanJobFactory jobFactory = new AutowiringSpringBeanJobFactory();
         jobFactory.setApplicationContext(applicationContext);
         schedulerFactoryBean.setJobFactory(jobFactory);
 
-        schedulerFactoryBean.setApplicationContext(applicationContext);
+        // TriggerListeners, JobListeners 지정
+        schedulerFactoryBean.setGlobalTriggerListeners(triggersListener);
+        schedulerFactoryBean.setGlobalJobListeners(jobsListener);
 
+        // application.properties 설정 등록
         Properties properties = new Properties();
         properties.putAll(quartzProperties.getProperties());
         properties.put("org.quartz.dataSource.mariadb.URL",System.getenv("SPRING_DATASOURCE_URL"));
         properties.put("org.quartz.dataSource.mariadb.driver",System.getenv("SPRING_DATASOURCE_DRIVER"));
         properties.put("org.quartz.dataSource.mariadb.user",System.getenv("SPRING_DATASOURCE_USERNAME"));
         properties.put("org.quartz.dataSource.mariadb.password",System.getenv("SPRING_DATASOURCE_PASSWORD"));
-
-        schedulerFactoryBean.setGlobalTriggerListeners(triggersListener);
-        schedulerFactoryBean.setGlobalJobListeners(jobsListener);
-        schedulerFactoryBean.setOverwriteExistingJobs(true);
         schedulerFactoryBean.setQuartzProperties(properties);
+        schedulerFactoryBean.setOverwriteExistingJobs(true);
         schedulerFactoryBean.setWaitForJobsToCompleteOnShutdown(true);
+
+
         return schedulerFactoryBean;
     }
 }

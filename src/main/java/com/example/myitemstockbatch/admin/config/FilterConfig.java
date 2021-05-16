@@ -1,4 +1,4 @@
-package com.example.myitemstockbatch.config;
+package com.example.myitemstockbatch.admin.config;
 
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

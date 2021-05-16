@@ -1,11 +1,10 @@
-package com.example.myitemstockbatch.quartz.controller;
+package com.example.myitemstockbatch.admin.controller;
 
-import com.example.myitemstockbatch.quartz.dto.ApiResponse;
-import com.example.myitemstockbatch.quartz.dto.JobRequest;
-import com.example.myitemstockbatch.quartz.dto.JobStatusResponse;
+import com.example.myitemstockbatch.admin.dto.ApiResponse;
+import com.example.myitemstockbatch.admin.dto.JobRequest;
 import com.example.myitemstockbatch.quartz.job.CronJob;
 import com.example.myitemstockbatch.quartz.job.SimpleJob;
-import com.example.myitemstockbatch.quartz.service.ScheduleService;
+import com.example.myitemstockbatch.admin.service.ScheduleService;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobKey;
 import org.springframework.http.HttpStatus;

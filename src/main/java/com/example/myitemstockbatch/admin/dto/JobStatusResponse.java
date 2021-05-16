@@ -1,4 +1,4 @@
-package com.example.myitemstockbatch.quartz.dto;
+package com.example.myitemstockbatch.admin.dto;
 
 import lombok.Data;
 

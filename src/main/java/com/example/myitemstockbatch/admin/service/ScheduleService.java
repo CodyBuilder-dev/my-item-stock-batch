@@ -1,7 +1,7 @@
-package com.example.myitemstockbatch.quartz.service;
+package com.example.myitemstockbatch.admin.service;
 
-import com.example.myitemstockbatch.quartz.dto.JobRequest;
-import com.example.myitemstockbatch.quartz.dto.JobStatusResponse;
+import com.example.myitemstockbatch.admin.dto.JobRequest;
+import com.example.myitemstockbatch.admin.dto.JobStatusResponse;
 import org.quartz.Job;
 import org.quartz.JobKey;
 

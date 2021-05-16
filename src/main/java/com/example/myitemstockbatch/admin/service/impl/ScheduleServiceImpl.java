@@ -1,9 +1,9 @@
-package com.example.myitemstockbatch.quartz.service.impl;
+package com.example.myitemstockbatch.admin.service.impl;
 
-import com.example.myitemstockbatch.quartz.dto.JobRequest;
-import com.example.myitemstockbatch.quartz.dto.JobResponse;
-import com.example.myitemstockbatch.quartz.dto.JobStatusResponse;
-import com.example.myitemstockbatch.quartz.service.ScheduleService;
+import com.example.myitemstockbatch.admin.dto.JobRequest;
+import com.example.myitemstockbatch.admin.dto.JobResponse;
+import com.example.myitemstockbatch.admin.dto.JobStatusResponse;
+import com.example.myitemstockbatch.admin.service.ScheduleService;
 import com.example.myitemstockbatch.quartz.utils.DateTimeUtils;
 import com.example.myitemstockbatch.quartz.utils.JobUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -103,7 +103,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             for (String groupName : scheduler.getJobGroupNames()) {
                 numOfGroups++;
                 for (JobKey jobKey : scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName))) {
-                    List<Trigger> triggers = (List<Trigger>) scheduler.getTriggersOfJob(jobKey);
+                    List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobKey);
 
                     jobResponse = JobResponse.builder()
                             .jobName(jobKey.getName())
