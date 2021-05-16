@@ -1,0 +1,5 @@
+### addBatchJob
+POST http://localhost:8080/api/batch/job
+Content-Type: application/x-www-form-urlencoded
+
+jobName=testAddBatch&cronExpression=0 */2 * * * ?
