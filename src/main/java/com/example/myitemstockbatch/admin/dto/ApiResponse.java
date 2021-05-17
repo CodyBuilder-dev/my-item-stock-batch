@@ -1,6 +1,11 @@
 package com.example.myitemstockbatch.admin.dto;
 
-public class ApiResponse {
+import lombok.Getter;
+
+import java.io.Serializable;
+
+@Getter
+public class ApiResponse implements Serializable {
     private Boolean success;
     private String message;
 
