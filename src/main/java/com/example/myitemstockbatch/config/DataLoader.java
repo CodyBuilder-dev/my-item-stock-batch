@@ -10,6 +10,9 @@ import org.springframework.context.event.ContextRefreshedEvent;
 
 import java.time.LocalDateTime;
 
+//todo: DataLoader의 정확한 용도와 실행 시점 알아내기
+//todo: ApplicationListener와 ContextRefreshedEvent 용도 알아내기
+//todo: Controller에 이미 addJob 호출부가 있는데 왜 여기서 또 호출하는지 알아내기
 public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     private ScheduleService scheduleService;
 
