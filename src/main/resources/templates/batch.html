@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Batch Job Admin</title>
+</head>
+<body>
+    <h1>Batch Job</h1>
+    <h2> 현재 Job 목록 받아오기 </h2>
+
+    <table>
+        <tr>
+            <th>NumOfAllJobs</th>
+            <th>NumOfGroups</th>
+            <th>NumOfRunningJobs</th>
+        </tr>
+        <tr>
+            <td th:text="${allJobs.numOfAllJobs}"></td>
+            <td th:text="${allJobs.numOfGroups}"></td>
+            <td th:text="${allJobs.numOfRunningJobs}"></td>
+        </tr>
+        <tr>
+            <th>jobName</th> <th>groupName</th> <th>jobStatus</th>
+            <th>scheduleTime</th> <th>lastFiredTime</th> <th>nextFireTime</th>
+        </tr>
+        <tr th:each="job : ${allJobs.jobs}">
+            <td th:text="${job.jobName}"></td> <td th:text="${job.groupName}"></td> <td th:text="${job.jobStatus}"></td>
+            <td th:text="${job.scheduleTime}"></td>  <td th:text="${job.lastFiredTime}"></td> <td th:text="${job.nextFireTime}"></td>
+        </tr>
+    </table>
+    <form action="/api/batch/job/reset" method="POST">
+        <input type="hidden" name="jobGroup" value="BATCH">
+
+        Job이름을 적어주세요<input name="jobName">
+        <button>ERROR 초기화</button>
+    </form>
+
+
+    <h2> CronJob 추가하기 </h2>
+    <form action="/api/batch/job" method="POST">
+        <input type="hidden" name="jobGroup" value="BATCH">
+
+        Job이름을 적어주세요<input name="jobName">
+        Job의 Cron Expression을 적어주세요<input name="cronExpression">
+
+        <button>전송하기</button>
+    </form>
+
+    <h2> SimpleJob 추가하기 </h2>
+    <form action="/api/batch/job" method="POST">
+        <input type="hidden" name="jobGroup" value="BATCH">
+
+        <p>Job이름을 적어주세요<input name="jobName"></p>
+        <p>Job의 시작일자를 적어주세요(YYYY-MM-DD HH:MM:SS)<input name="startDateAt"></p>
+        <p>Job의 주기(초)를 적어주세요<input name="repeatIntervalInSeconds"></p>
+        <p>Job의 반복횟수를 적어주세요<input name="repeatCount"></p>
+
+        <button>전송하기</button>
+    </form>
+
+    <h2> Job 제거하기 </h2>
+    <form action="/api/batch/job" method="POST">
+        <input type="hidden" name="_method" value="DELETE"/>
+        <input type="hidden" name="jobGroup" value="BATCH">
+
+        Job이름을 적어주세요<input name="jobName">
+        <button>전송하기</button>
+    </form>
+</body>
+</html>

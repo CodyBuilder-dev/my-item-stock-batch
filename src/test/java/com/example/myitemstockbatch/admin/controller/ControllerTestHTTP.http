@@ -1,0 +1,92 @@
+### OK Test
+GET http://localhost:8080/api/quartz/schedule/job
+
+### addScheduleJob - Cronjob
+POST http://localhost:8080/api/quartz/schedule/job
+Content-Type: application/json
+
+{
+  "jobName":"testPostNameCronJson",
+  "cronExpression":"0 * * * * ?"
+}
+
+### addScheduleJob - CronJob2
+POST http://localhost:8080/api/quartz/schedule/job
+Content-Type: multipart/form-data;boundary="boundary"
+
+--boundary
+Content-Disposition: form-data; name="jobName"
+
+testPostNameCronMulti
+--boundary
+Content-Disposition: form-data; name="cronExpression"
+
+0 * * * * ?
+--boundary--
+
+### addScheduleJob - CronJob3
+POST http://localhost:8080/api/quartz/schedule/job
+Content-Type: application/x-www-form-urlencoded
+
+jobName=testPostNameCronForm&cronExpression=0 * * * * ?
+
+
+
+### addScheduleJob - SimpleJOb
+POST http://localhost:8080/api/quartz/schedule/job
+Content-Type: application/json
+
+{
+  "jobName":"testPostNameSimpleJson",
+  "startDateAt":"2021-05-16 13:39:00",
+  "repeatIntervalInSeconds": 10,
+  "repeatCount": 5
+}
+
+### addScheduleJob - SimpleJob2
+POST http://localhost:8080/api/quartz/schedule/job
+Content-Type: multipart/form-data;boundary="boundary"
+
+--boundary
+Content-Disposition: form-data; name="jobName"
+
+testPostNameSimpleMulti
+--boundary
+Content-Disposition: form-data; name="startDateAt"
+
+2021-05-16 01:44:00
+--boundary
+Content-Disposition: form-data; name="repeatIntervalInSeconds"
+
+10
+--boundary
+Content-Disposition: form-data; name="repeatCount"
+
+5
+--boundary--
+
+### addScheduleJob - SimpleJob3
+POST http://localhost:8080/api/quartz/schedule/job
+Content-Type: application/x-www-form-urlencoded
+
+jobName=testPostNameSimpleForm&startDateAt=2021-05-16 01:44:00&repeatIntervalInSeconds=10&repeatCount=5
+
+
+
+### deleteScheduleJob
+DELETE http://localhost:8080/api/quartz/schedule/job
+Content-Type: application/x-www-form-urlencoded
+
+jobName=testPostName
+
+### pauseJob
+PUT http://localhost:8080/api/quartz/schedule/job/pause
+Content-Type: application/x-www-form-urlencoded
+
+jobName=testPostName
+
+### resumeJob
+PUT http://localhost:8080/api/quartz/schedule/job/resume
+Content-Type: application/x-www-form-urlencoded
+
+jobName=testPostName

@@ -1,9 +1,9 @@
-package com.example.myitemstockbatch.quartz.service.impl;
+package com.example.myitemstockbatch.admin.service.impl;
 
-import com.example.myitemstockbatch.quartz.dto.JobRequest;
-import com.example.myitemstockbatch.quartz.dto.JobResponse;
-import com.example.myitemstockbatch.quartz.dto.JobStatusResponse;
-import com.example.myitemstockbatch.quartz.service.ScheduleService;
+import com.example.myitemstockbatch.admin.dto.JobRequest;
+import com.example.myitemstockbatch.admin.dto.JobResponse;
+import com.example.myitemstockbatch.admin.dto.JobStatusResponse;
+import com.example.myitemstockbatch.admin.service.ScheduleService;
 import com.example.myitemstockbatch.quartz.utils.DateTimeUtils;
 import com.example.myitemstockbatch.quartz.utils.JobUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -30,9 +30,54 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    public JobStatusResponse getAllJobs() {
+        JobResponse jobResponse;
+        JobStatusResponse jobStatusResponse = new JobStatusResponse();
+        List<JobResponse> jobs = new ArrayList<>();
+        int numOfRunningJobs = 0;
+        int numOfGroups = 0;
+        int numOfAllJobs = 0;
+
+        try {
+            Scheduler scheduler = schedulerFactoryBean.getScheduler();
+            for (String groupName : scheduler.getJobGroupNames()) {
+                numOfGroups++;
+                for (JobKey jobKey : scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName))) {
+                    List<? extends Trigger> triggers = scheduler.getTriggersOfJob(jobKey);
+
+                    jobResponse = JobResponse.builder()
+                            .jobName(jobKey.getName())
+                            .groupName(jobKey.getGroup())
+                            .scheduleTime(DateTimeUtils.toString(triggers.get(0).getStartTime()))
+                            .lastFiredTime(DateTimeUtils.toString(triggers.get(0).getPreviousFireTime()))
+                            .nextFireTime(DateTimeUtils.toString(triggers.get(0).getNextFireTime()))
+                            .build();
+
+                    if (isJobRunning(jobKey)) {
+                        jobResponse.setJobStatus("RUNNING");
+                        numOfRunningJobs++;
+                    } else {
+                        String jobState = getJobState(jobKey);
+                        jobResponse.setJobStatus(jobState);
+                    }
+                    numOfAllJobs++;
+                    jobs.add(jobResponse);
+                }
+            }
+        } catch (SchedulerException e) {
+            log.error("[schedulerdebug] error while fetching all job info", e);
+        }
+
+        jobStatusResponse.setNumOfAllJobs(numOfAllJobs);
+        jobStatusResponse.setNumOfRunningJobs(numOfRunningJobs);
+        jobStatusResponse.setNumOfGroups(numOfGroups);
+        jobStatusResponse.setJobs(jobs);
+        return jobStatusResponse;
+    }
+
+    @Override
     public boolean addJob(JobRequest jobRequest, Class<? extends Job> jobClass) {
         //todo : job history에도 기록하도록 함.
-
         JobKey jobKey = null;
         JobDetail jobDetail;
         Trigger trigger;
@@ -89,51 +134,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         return false;
     }
 
-    @Override
-    public JobStatusResponse getAllJobs() {
-        JobResponse jobResponse;
-        JobStatusResponse jobStatusResponse = new JobStatusResponse();
-        List<JobResponse> jobs = new ArrayList<>();
-        int numOfRunningJobs = 0;
-        int numOfGroups = 0;
-        int numOfAllJobs = 0;
 
-        try {
-            Scheduler scheduler = schedulerFactoryBean.getScheduler();
-            for (String groupName : scheduler.getJobGroupNames()) {
-                numOfGroups++;
-                for (JobKey jobKey : scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName))) {
-                    List<Trigger> triggers = (List<Trigger>) scheduler.getTriggersOfJob(jobKey);
-
-                    jobResponse = JobResponse.builder()
-                            .jobName(jobKey.getName())
-                            .groupName(jobKey.getGroup())
-                            .scheduleTime(DateTimeUtils.toString(triggers.get(0).getStartTime()))
-                            .lastFiredTime(DateTimeUtils.toString(triggers.get(0).getPreviousFireTime()))
-                            .nextFireTime(DateTimeUtils.toString(triggers.get(0).getNextFireTime()))
-                            .build();
-
-                    if (isJobRunning(jobKey)) {
-                        jobResponse.setJobStatus("RUNNING");
-                        numOfRunningJobs++;
-                    } else {
-                        String jobState = getJobState(jobKey);
-                        jobResponse.setJobStatus(jobState);
-                    }
-                    numOfAllJobs++;
-                    jobs.add(jobResponse);
-                }
-            }
-        } catch (SchedulerException e) {
-            log.error("[schedulerdebug] error while fetching all job info", e);
-        }
-
-        jobStatusResponse.setNumOfAllJobs(numOfAllJobs);
-        jobStatusResponse.setNumOfRunningJobs(numOfRunningJobs);
-        jobStatusResponse.setNumOfGroups(numOfGroups);
-        jobStatusResponse.setJobs(jobs);
-        return jobStatusResponse;
-    }
 
     @Override
     public boolean isJobRunning(JobKey jobKey) {

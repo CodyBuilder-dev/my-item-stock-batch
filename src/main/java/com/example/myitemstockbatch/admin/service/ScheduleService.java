@@ -1,16 +1,12 @@
-package com.example.myitemstockbatch.quartz.service;
+package com.example.myitemstockbatch.admin.service;
 
-import com.example.myitemstockbatch.quartz.dto.JobRequest;
-import com.example.myitemstockbatch.quartz.dto.JobStatusResponse;
+import com.example.myitemstockbatch.admin.dto.JobRequest;
+import com.example.myitemstockbatch.admin.dto.JobStatusResponse;
 import org.quartz.Job;
 import org.quartz.JobKey;
 
 public interface ScheduleService {
     JobStatusResponse getAllJobs();
-
-    boolean isJobRunning(JobKey jobKey);
-
-    boolean isJobExists(JobKey jobKey);
 
     boolean addJob(JobRequest jobRequest, Class<? extends Job> jobClass);
 
@@ -20,5 +16,11 @@ public interface ScheduleService {
 
     boolean resumeJob(JobKey jobKey);
 
+
+    boolean isJobRunning(JobKey jobKey);
+
+    boolean isJobExists(JobKey jobKey);
+
     String getJobState(JobKey jobKey);
+
 }

@@ -1,19 +1,15 @@
-package com.example.myitemstockbatch.quartz.controller;
+package com.example.myitemstockbatch.admin.controller;
 
-import com.example.myitemstockbatch.quartz.dto.ApiResponse;
-import com.example.myitemstockbatch.quartz.dto.JobRequest;
-import com.example.myitemstockbatch.quartz.dto.JobStatusResponse;
+import com.example.myitemstockbatch.admin.dto.ApiResponse;
+import com.example.myitemstockbatch.admin.dto.JobRequest;
 import com.example.myitemstockbatch.quartz.job.CronJob;
 import com.example.myitemstockbatch.quartz.job.SimpleJob;
-import com.example.myitemstockbatch.quartz.service.ScheduleService;
+import com.example.myitemstockbatch.admin.service.ScheduleService;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobKey;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -25,6 +21,12 @@ public class ScheduleRestController {
         this.scheduleService = scheduleService;
     }
 
+    @RequestMapping(value = "/job", method=RequestMethod.GET)
+    public ResponseEntity<?> showTestText(){
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    //todo: @ModelAttribute / @RequestBody중 어떤거 써야 하는지 알아내기
     @RequestMapping(value = "/job", method = RequestMethod.POST)
     public ResponseEntity<?> addScheduleJob(@ModelAttribute JobRequest jobRequest) {
         log.debug("add schedule job :: jobRequest : {}", jobRequest);
