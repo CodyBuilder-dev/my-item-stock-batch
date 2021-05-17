@@ -1,4 +1,4 @@
-package com.example.myitemstockbatch.config;
+package com.example.myitemstockbatch.quartz.config;
 
 import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.BeansException;
