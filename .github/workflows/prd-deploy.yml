@@ -64,6 +64,7 @@ jobs:
           --protocol tcp
           --port 3306
           --cidr $PUBLIC_IP/32
+        if: ${{ always() }}
 
       - name: Set Zip File Name
         run:
@@ -85,7 +86,6 @@ jobs:
           --deployment-config-name CodeDeployDefault.AllAtOnce
           --deployment-group-name dg-$PROJECT_NAME$SUBPROJECT_NAME
           --s3-location bucket=$PROJECT_NAME,bundleType=zip,key=$ZIP_NAME
-
 
 #    - name: Deploy from Github Directly with CodeDeploy
 #      run: >
