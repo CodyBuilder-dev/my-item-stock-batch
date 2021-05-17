@@ -25,19 +25,18 @@ class MyItemStockBatchApplicationTests {
 	void contextLoads() {
 	}
 
-	/**
+	/*
 	 * datasource bean이 잘 생성되고, 설정값은 잘 들어갔는지 확인하는 코드
 	 */
 	//todo: Log와 Logger의 차이가 뭘까?
 	//todo: 같은 Log도 juli, common등 다양한데 차이가 뭘까?
-	@Test
-	void dataSourceBeanSet() {
-////		DefaultListableBeanFactory listableBeanFactory = new DefaultListableBeanFactory();
+//	@Test
+//	void dataSourceBeanSet() {
+//		DefaultListableBeanFactory listableBeanFactory = new DefaultListableBeanFactory();
 //		String[] listedBean = apxContext.getBeanDefinitionNames();
 //		for(String name: listedBean){
 ////			System.out.println("BEAN NAME="+name);
 //			log.info(name);
 //		}
-
-	}
+//	}
 }
