@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import org.apache.juli.logging.Log;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -15,8 +16,9 @@ import java.util.logging.Logger;
 
 @SpringBootTest
 class MyItemStockBatchApplicationTests {
-
+	@Autowired
 	Logger log;
+	@Autowired
 	ApplicationContext apxContext;
 
 	@Test
@@ -30,12 +32,12 @@ class MyItemStockBatchApplicationTests {
 	//todo: 같은 Log도 juli, common등 다양한데 차이가 뭘까?
 	@Test
 	void dataSourceBeanSet() {
-//		DefaultListableBeanFactory listableBeanFactory = new DefaultListableBeanFactory();
-		String[] listedBean = apxContext.getBeanDefinitionNames();
-		for(String name: listedBean){
-//			System.out.println("BEAN NAME="+name);
-			log.info(name);
-		}
+////		DefaultListableBeanFactory listableBeanFactory = new DefaultListableBeanFactory();
+//		String[] listedBean = apxContext.getBeanDefinitionNames();
+//		for(String name: listedBean){
+////			System.out.println("BEAN NAME="+name);
+//			log.info(name);
+//		}
 
 	}
 }
