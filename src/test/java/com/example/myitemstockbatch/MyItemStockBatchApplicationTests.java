@@ -1,12 +1,9 @@
 package com.example.myitemstockbatch;
 
-import com.zaxxer.hikari.HikariDataSource;
-
 import org.apache.juli.logging.Log;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -16,10 +13,6 @@ import java.util.logging.Logger;
 
 @SpringBootTest
 class MyItemStockBatchApplicationTests {
-	@Autowired
-	Logger log;
-	@Autowired
-	ApplicationContext apxContext;
 
 	@Test
 	void contextLoads() {
